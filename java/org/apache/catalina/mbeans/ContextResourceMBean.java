@@ -26,9 +26,9 @@ import javax.management.ReflectionException;
 import javax.management.RuntimeOperationsException;
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
-import org.apache.catalina.deploy.NamingResources;
 import org.apache.tomcat.util.modeler.BaseModelMBean;
 import org.apache.tomcat.util.xml.ContextResource;
+import org.apache.tomcat.util.xml.INamingResources;
 
 
 /**
@@ -179,7 +179,7 @@ public class ContextResourceMBean extends BaseModelMBean {
 
         // cannot use side-effects.  It's removed and added back each time
         // there is a modification in a resource.
-        NamingResources nr = cr.getNamingResources();
+        INamingResources nr = cr.getNamingResources();
         nr.removeResource(cr.getName());
         nr.addResource(cr);
     }

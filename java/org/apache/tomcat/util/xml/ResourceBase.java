@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.catalina.deploy.NamingResources;
-
 /**
  * Representation of an Context element
  *
@@ -200,13 +198,13 @@ public class ResourceBase implements Serializable, Injectable {
     /**
      * The NamingResources with which we are associated (if any).
      */
-    protected NamingResources resources = null;
+    protected INamingResources resources = null;
 
-    public NamingResources getNamingResources() {
+    public INamingResources getNamingResources() {
         return (this.resources);
     }
 
-    public void setNamingResources(NamingResources resources) {
+    public void setNamingResources(INamingResources resources) {
         this.resources = resources;
     }
 }

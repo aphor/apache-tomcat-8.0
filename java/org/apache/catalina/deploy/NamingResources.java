@@ -52,6 +52,7 @@ import org.apache.tomcat.util.xml.ContextResourceEnvRef;
 import org.apache.tomcat.util.xml.ContextResourceLink;
 import org.apache.tomcat.util.xml.ContextService;
 import org.apache.tomcat.util.xml.ContextTransaction;
+import org.apache.tomcat.util.xml.INamingResources;
 import org.apache.tomcat.util.xml.InjectionTarget;
 import org.apache.tomcat.util.xml.MessageDestinationRef;
 import org.apache.tomcat.util.xml.ResourceBase;
@@ -65,7 +66,7 @@ import org.apache.tomcat.util.xml.ResourceBase;
  * @version $Id$
  */
 
-public class NamingResources extends LifecycleMBeanBase implements Serializable {
+public class NamingResources extends LifecycleMBeanBase implements Serializable, INamingResources {
 
     private static final long serialVersionUID = 1L;
 
