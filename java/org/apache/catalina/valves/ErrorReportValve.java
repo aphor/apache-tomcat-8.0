@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.tomcat.util.ExceptionUtils;
+import org.apache.tomcat.util.http.RequestUtil;
 
 /**
  * <p>Implementation of a Valve that outputs HTML error pages.</p>

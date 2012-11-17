@@ -14,25 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 
 /**
- * Representation of an EJB resource reference for a web application, as
- * represented in a <code>&lt;ejb-ref&gt;</code> element in the
+ * Representation of a local EJB resource reference for a web application, as
+ * represented in a <code>&lt;ejb-local-ref&gt;</code> element in the
  * deployment descriptor.
  *
  * @author Craig R. McClanahan
  * @author Peter Rossbach (pero@apache.org)
  * @version $Id$
  */
-public class ContextEjb extends ResourceBase {
+public class ContextLocalEjb extends ResourceBase {
 
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
-
 
     /**
      * The name of the EJB home implementation class.
@@ -61,17 +59,18 @@ public class ContextEjb extends ResourceBase {
         this.link = link;
     }
 
-    /**
-     * The name of the EJB remote implementation class.
-     */
-    private String remote = null;
 
-    public String getRemote() {
-        return (this.remote);
+    /**
+     * The name of the EJB local implementation class.
+     */
+    private String local = null;
+
+    public String getLocal() {
+        return (this.local);
     }
 
-    public void setRemote(String remote) {
-        this.remote = remote;
+    public void setLocal(String local) {
+        this.local = local;
     }
 
 
@@ -84,7 +83,7 @@ public class ContextEjb extends ResourceBase {
     @Override
     public String toString() {
 
-        StringBuilder sb = new StringBuilder("ContextEjb[");
+        StringBuilder sb = new StringBuilder("ContextLocalEjb[");
         sb.append("name=");
         sb.append(getName());
         if (getDescription() != null) {
@@ -99,17 +98,16 @@ public class ContextEjb extends ResourceBase {
             sb.append(", home=");
             sb.append(home);
         }
-        if (remote != null) {
-            sb.append(", remote=");
-            sb.append(remote);
-        }
         if (link != null) {
             sb.append(", link=");
             sb.append(link);
         }
+        if (local != null) {
+            sb.append(", local=");
+            sb.append(local);
+        }
         sb.append("]");
         return (sb.toString());
-
     }
 
 
@@ -119,7 +117,7 @@ public class ContextEjb extends ResourceBase {
         int result = super.hashCode();
         result = prime * result + ((home == null) ? 0 : home.hashCode());
         result = prime * result + ((link == null) ? 0 : link.hashCode());
-        result = prime * result + ((remote == null) ? 0 : remote.hashCode());
+        result = prime * result + ((local == null) ? 0 : local.hashCode());
         return result;
     }
 
@@ -135,7 +133,7 @@ public class ContextEjb extends ResourceBase {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ContextEjb other = (ContextEjb) obj;
+        ContextLocalEjb other = (ContextLocalEjb) obj;
         if (home == null) {
             if (other.home != null) {
                 return false;
@@ -150,11 +148,11 @@ public class ContextEjb extends ResourceBase {
         } else if (!link.equals(other.link)) {
             return false;
         }
-        if (remote == null) {
-            if (other.remote != null) {
+        if (local == null) {
+            if (other.local != null) {
                 return false;
             }
-        } else if (!remote.equals(other.remote)) {
+        } else if (!local.equals(other.local)) {
             return false;
         }
         return true;

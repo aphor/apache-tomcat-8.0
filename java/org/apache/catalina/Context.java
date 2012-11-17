@@ -27,14 +27,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletSecurityElement;
 import javax.servlet.descriptor.JspConfigDescriptor;
 
-import org.apache.catalina.deploy.ApplicationParameter;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
-import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.NamingResources;
-import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.tomcat.JarScanner;
+import org.apache.tomcat.util.xml.ApplicationParameter;
+import org.apache.tomcat.util.xml.ErrorPage;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.FilterMap;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.SecurityConstraint;
 
 /**
  * A <b>Context</b> is a Container that represents a servlet context, and

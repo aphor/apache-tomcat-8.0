@@ -45,15 +45,6 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Server;
-import org.apache.catalina.deploy.ContextEjb;
-import org.apache.catalina.deploy.ContextEnvironment;
-import org.apache.catalina.deploy.ContextHandler;
-import org.apache.catalina.deploy.ContextLocalEjb;
-import org.apache.catalina.deploy.ContextResource;
-import org.apache.catalina.deploy.ContextResourceEnvRef;
-import org.apache.catalina.deploy.ContextResourceLink;
-import org.apache.catalina.deploy.ContextService;
-import org.apache.catalina.deploy.ContextTransaction;
 import org.apache.catalina.deploy.NamingResources;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
@@ -69,6 +60,15 @@ import org.apache.naming.ServiceRef;
 import org.apache.naming.TransactionRef;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.ContextEjb;
+import org.apache.tomcat.util.xml.ContextEnvironment;
+import org.apache.tomcat.util.xml.ContextHandler;
+import org.apache.tomcat.util.xml.ContextLocalEjb;
+import org.apache.tomcat.util.xml.ContextResource;
+import org.apache.tomcat.util.xml.ContextResourceEnvRef;
+import org.apache.tomcat.util.xml.ContextResourceLink;
+import org.apache.tomcat.util.xml.ContextService;
+import org.apache.tomcat.util.xml.ContextTransaction;
 
 
 /**

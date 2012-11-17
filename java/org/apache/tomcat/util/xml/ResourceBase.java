@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.catalina.deploy.NamingResources;
 
 /**
  * Representation of an Context element
@@ -205,7 +206,7 @@ public class ResourceBase implements Serializable, Injectable {
         return (this.resources);
     }
 
-    void setNamingResources(NamingResources resources) {
+    public void setNamingResources(NamingResources resources) {
         this.resources = resources;
     }
 }

@@ -25,7 +25,7 @@ import java.util.Iterator;
 import org.apache.catalina.Group;
 import org.apache.catalina.Role;
 import org.apache.catalina.UserDatabase;
-import org.apache.catalina.util.RequestUtil;
+import org.apache.tomcat.util.http.RequestUtil;
 
 /**
  * <p>Concrete implementation of {@link org.apache.catalina.User} for the

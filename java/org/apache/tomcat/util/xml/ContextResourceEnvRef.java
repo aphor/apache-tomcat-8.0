@@ -14,22 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 
 /**
- * Representation of an application environment entry, as represented in
- * an <code>&lt;env-entry&gt;</code> element in the deployment descriptor.
+ * Representation of an application resource reference, as represented in
+ * an <code>&lt;res-env-refy&gt;</code> element in the deployment descriptor.
  *
  * @author Craig R. McClanahan
+ * @author Peter Rossbach (pero@apache.org)
  * @version $Id$
  */
-public class ContextEnvironment extends ResourceBase {
+public class ContextResourceEnvRef extends ResourceBase {
 
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Does this environment entry allow overrides by the application
@@ -45,21 +45,6 @@ public class ContextEnvironment extends ResourceBase {
         this.override = override;
     }
 
-
-    /**
-     * The value of this environment entry.
-     */
-    private String value = null;
-
-    public String getValue() {
-        return (this.value);
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-
     // --------------------------------------------------------- Public Methods
 
 
@@ -69,26 +54,17 @@ public class ContextEnvironment extends ResourceBase {
     @Override
     public String toString() {
 
-        StringBuilder sb = new StringBuilder("ContextEnvironment[");
+        StringBuilder sb = new StringBuilder("ContextResourceEnvRef[");
         sb.append("name=");
         sb.append(getName());
-        if (getDescription() != null) {
-            sb.append(", description=");
-            sb.append(getDescription());
-        }
         if (getType() != null) {
             sb.append(", type=");
             sb.append(getType());
-        }
-        if (value != null) {
-            sb.append(", value=");
-            sb.append(value);
         }
         sb.append(", override=");
         sb.append(override);
         sb.append("]");
         return (sb.toString());
-
     }
 
 
@@ -97,7 +73,6 @@ public class ContextEnvironment extends ResourceBase {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + (override ? 1231 : 1237);
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
 
@@ -113,15 +88,8 @@ public class ContextEnvironment extends ResourceBase {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ContextEnvironment other = (ContextEnvironment) obj;
+        ContextResourceEnvRef other = (ContextResourceEnvRef) obj;
         if (override != other.override) {
-            return false;
-        }
-        if (value == null) {
-            if (other.value != null) {
-                return false;
-            }
-        } else if (!value.equals(other.value)) {
             return false;
         }
         return true;

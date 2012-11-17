@@ -62,7 +62,6 @@ import org.apache.catalina.Service;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
-import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.mapper.MappingData;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -70,6 +69,7 @@ import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.RequestUtil;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.FilterDef;
 
 
 /**

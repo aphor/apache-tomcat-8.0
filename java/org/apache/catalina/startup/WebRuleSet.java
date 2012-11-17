@@ -22,12 +22,6 @@ package org.apache.catalina.startup;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import org.apache.catalina.deploy.ContextHandler;
-import org.apache.catalina.deploy.ContextService;
-import org.apache.catalina.deploy.ResourceBase;
-import org.apache.catalina.deploy.SecurityConstraint;
-import org.apache.catalina.deploy.ServletDef;
-import org.apache.catalina.deploy.WebXml;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.digester.CallMethodRule;
 import org.apache.tomcat.util.digester.CallParamRule;
@@ -36,6 +30,12 @@ import org.apache.tomcat.util.digester.Rule;
 import org.apache.tomcat.util.digester.RuleSetBase;
 import org.apache.tomcat.util.digester.SetNextRule;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.ContextHandler;
+import org.apache.tomcat.util.xml.ContextService;
+import org.apache.tomcat.util.xml.ResourceBase;
+import org.apache.tomcat.util.xml.SecurityConstraint;
+import org.apache.tomcat.util.xml.ServletDef;
+import org.apache.tomcat.util.xml.WebXml;
 import org.xml.sax.Attributes;
 
 

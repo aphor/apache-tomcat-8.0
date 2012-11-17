@@ -16,7 +16,7 @@
  */
 
 
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 
 import java.io.Serializable;
@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import javax.servlet.DispatcherType;
 
-import org.apache.catalina.util.RequestUtil;
+import org.apache.tomcat.util.http.RequestUtil;
 
 
 /**

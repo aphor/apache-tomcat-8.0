@@ -14,13 +14,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.tomcat.util.xml;
+
+import java.io.Serializable;
+
+/**
+ * @version $Id$
+ */
+public class InjectionTarget implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String targetClass;
+    private String targetName;
 
 
-package org.apache.catalina.deploy;
+    public InjectionTarget() {
+        // NOOP
+    }
 
+    public InjectionTarget(String targetClass, String targetName) {
+        this.targetClass = targetClass;
+        this.targetName = targetName;
+    }
 
-public class Constants {
+    public String getTargetClass() {
+        return targetClass;
+    }
 
-    public static final String Package = "org.apache.catalina.deploy";
+    public void setTargetClass(String targetClass) {
+        this.targetClass = targetClass;
+    }
+
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
+    }
 
 }

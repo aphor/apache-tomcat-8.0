@@ -52,9 +52,9 @@ import org.apache.catalina.manager.util.BaseSessionComparator;
 import org.apache.catalina.manager.util.ReverseComparator;
 import org.apache.catalina.manager.util.SessionUtils;
 import org.apache.catalina.util.ContextName;
-import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.catalina.util.URLEncoder;
+import org.apache.tomcat.util.http.RequestUtil;
 import org.apache.tomcat.util.http.fileupload.ParameterParser;
 import org.apache.tomcat.util.res.StringManager;
 

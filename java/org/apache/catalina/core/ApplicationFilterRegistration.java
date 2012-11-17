@@ -27,10 +27,10 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.util.ParameterMap;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.FilterMap;
 
 public class ApplicationFilterRegistration
         implements FilterRegistration.Dynamic {

@@ -24,13 +24,13 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.RuntimeOperationsException;
 
-import org.apache.catalina.deploy.ContextEnvironment;
-import org.apache.catalina.deploy.ContextResource;
-import org.apache.catalina.deploy.ContextResourceLink;
 import org.apache.catalina.deploy.NamingResources;
 import org.apache.tomcat.util.modeler.BaseModelMBean;
 import org.apache.tomcat.util.modeler.ManagedBean;
 import org.apache.tomcat.util.modeler.Registry;
+import org.apache.tomcat.util.xml.ContextEnvironment;
+import org.apache.tomcat.util.xml.ContextResource;
+import org.apache.tomcat.util.xml.ContextResourceLink;
 
 /**
  * <p>A <strong>ModelMBean</strong> implementation for the

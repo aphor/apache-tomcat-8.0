@@ -37,8 +37,8 @@ import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.util.RequestUtil;
 import org.apache.tomcat.util.ExceptionUtils;
+import org.apache.tomcat.util.http.RequestUtil;
 
 /**
  * This is a refactoring of the servlet to externalize

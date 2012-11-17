@@ -27,14 +27,14 @@ import javax.annotation.security.RunAs;
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
-import org.apache.catalina.deploy.ContextEnvironment;
-import org.apache.catalina.deploy.ContextResource;
-import org.apache.catalina.deploy.ContextResourceEnvRef;
-import org.apache.catalina.deploy.ContextService;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.MessageDestinationRef;
 import org.apache.catalina.util.Introspection;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.ContextEnvironment;
+import org.apache.tomcat.util.xml.ContextResource;
+import org.apache.tomcat.util.xml.ContextResourceEnvRef;
+import org.apache.tomcat.util.xml.ContextService;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.MessageDestinationRef;
 
 /**
  * <p><strong>AnnotationSet</strong> for processing the annotations of the web application

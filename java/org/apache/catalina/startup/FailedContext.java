@@ -47,18 +47,18 @@ import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.catalina.deploy.ApplicationParameter;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
-import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.NamingResources;
-import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.juli.logging.Log;
 import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.util.res.StringManager;
+import org.apache.tomcat.util.xml.ApplicationParameter;
+import org.apache.tomcat.util.xml.ErrorPage;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.FilterMap;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.SecurityConstraint;
 
 /**
  * An implementation of {@link Context} that is used as a place-holder for

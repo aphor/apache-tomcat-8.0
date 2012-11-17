@@ -87,25 +87,13 @@ import org.apache.catalina.Valve;
 import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.Wrapper;
-import org.apache.catalina.deploy.ApplicationParameter;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
-import org.apache.catalina.deploy.Injectable;
-import org.apache.catalina.deploy.InjectionTarget;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.MessageDestination;
-import org.apache.catalina.deploy.MessageDestinationRef;
 import org.apache.catalina.deploy.NamingResources;
-import org.apache.catalina.deploy.SecurityCollection;
-import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.loader.WebappLoader;
 import org.apache.catalina.session.StandardManager;
 import org.apache.catalina.startup.TldConfig;
 import org.apache.catalina.util.CharsetMapper;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.ExtensionValidator;
-import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.catalina.webresources.StandardRoot;
 import org.apache.juli.logging.Log;
@@ -115,7 +103,19 @@ import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
+import org.apache.tomcat.util.http.RequestUtil;
 import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.apache.tomcat.util.xml.ApplicationParameter;
+import org.apache.tomcat.util.xml.ErrorPage;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.FilterMap;
+import org.apache.tomcat.util.xml.Injectable;
+import org.apache.tomcat.util.xml.InjectionTarget;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.MessageDestination;
+import org.apache.tomcat.util.xml.MessageDestinationRef;
+import org.apache.tomcat.util.xml.SecurityCollection;
+import org.apache.tomcat.util.xml.SecurityConstraint;
 
 /**
  * Standard implementation of the <b>Context</b> interface.  Each
@@ -5568,7 +5568,7 @@ public class StandardContext extends ContainerBase
         if (this.publicId == null)
             return (false);
         if (this.publicId.equals
-            (org.apache.catalina.startup.Constants.WebDtdPublicId_22))
+            (org.apache.tomcat.util.xml.Constants.WebDtdPublicId_22))
             return (true);
         else
             return (false);

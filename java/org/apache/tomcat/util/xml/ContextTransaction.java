@@ -16,7 +16,7 @@
  */
 
 
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 import java.io.Serializable;
 import java.util.HashMap;

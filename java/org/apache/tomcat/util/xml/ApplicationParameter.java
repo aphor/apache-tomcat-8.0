@@ -14,25 +14,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+
+
+package org.apache.tomcat.util.xml;
+
+import java.io.Serializable;
 
 
 /**
- * Representation of an application resource reference, as represented in
- * an <code>&lt;res-env-refy&gt;</code> element in the deployment descriptor.
+ * Representation of a context initialization parameter that is configured
+ * in the server configuration file, rather than the application deployment
+ * descriptor.  This is convenient for establishing default values (which
+ * may be configured to allow application overrides or not) without having
+ * to modify the application deployment descriptor itself.
  *
  * @author Craig R. McClanahan
- * @author Peter Rossbach (pero@apache.org)
  * @version $Id$
  */
-public class ContextResourceEnvRef extends ResourceBase {
+
+public class ApplicationParameter implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
 
+
     /**
-     * Does this environment entry allow overrides by the application
+     * The description of this environment entry.
+     */
+    private String description = null;
+
+    public String getDescription() {
+        return (this.description);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    /**
+     * The name of this application parameter.
+     */
+    private String name = null;
+
+    public String getName() {
+        return (this.name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    /**
+     * Does this application parameter allow overrides by the application
      * deployment descriptor?
      */
     private boolean override = true;
@@ -45,6 +81,20 @@ public class ContextResourceEnvRef extends ResourceBase {
         this.override = override;
     }
 
+
+    /**
+     * The value of this application parameter.
+     */
+    private String value = null;
+
+    public String getValue() {
+        return (this.value);
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     // --------------------------------------------------------- Public Methods
 
 
@@ -54,44 +104,21 @@ public class ContextResourceEnvRef extends ResourceBase {
     @Override
     public String toString() {
 
-        StringBuilder sb = new StringBuilder("ContextResourceEnvRef[");
+        StringBuilder sb = new StringBuilder("ApplicationParameter[");
         sb.append("name=");
-        sb.append(getName());
-        if (getType() != null) {
-            sb.append(", type=");
-            sb.append(getType());
+        sb.append(name);
+        if (description != null) {
+            sb.append(", description=");
+            sb.append(description);
         }
+        sb.append(", value=");
+        sb.append(value);
         sb.append(", override=");
         sb.append(override);
         sb.append("]");
         return (sb.toString());
+
     }
 
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + (override ? 1231 : 1237);
-        return result;
-    }
-
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ContextResourceEnvRef other = (ContextResourceEnvRef) obj;
-        if (override != other.override) {
-            return false;
-        }
-        return true;
-    }
 }

@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 /**
- * <p>Representation of a message destination for a web application, as
- * represented in a <code>&lt;message-destination&gt;</code> element
+ * <p>Representation of a message destination reference for a web application,
+ * as represented in a <code>&lt;message-destination-ref&gt;</code> element
  * in the deployment descriptor.</p>
  *
  * @author Craig R. McClanahan
  * @version $Id$
  * @since Tomcat 5.0
  */
-public class MessageDestination extends ResourceBase {
+public class MessageDestinationRef extends ResourceBase {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,46 +33,31 @@ public class MessageDestination extends ResourceBase {
 
 
     /**
-     * The display name of this destination.
+     * The link of this destination ref.
      */
-    private String displayName = null;
+    private String link = null;
 
-    public String getDisplayName() {
-        return (this.displayName);
+    public String getLink() {
+        return (this.link);
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setLink(String link) {
+        this.link = link;
     }
 
 
     /**
-     * The large icon of this destination.
+     * The usage of this destination ref.
      */
-    private String largeIcon = null;
+    private String usage = null;
 
-    public String getLargeIcon() {
-        return (this.largeIcon);
+    public String getUsage() {
+        return (this.usage);
     }
 
-    public void setLargeIcon(String largeIcon) {
-        this.largeIcon = largeIcon;
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
-
-
-    /**
-     * The small icon of this destination.
-     */
-    private String smallIcon = null;
-
-    public String getSmallIcon() {
-        return (this.smallIcon);
-    }
-
-    public void setSmallIcon(String smallIcon) {
-        this.smallIcon = smallIcon;
-    }
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -86,17 +71,17 @@ public class MessageDestination extends ResourceBase {
         StringBuilder sb = new StringBuilder("MessageDestination[");
         sb.append("name=");
         sb.append(getName());
-        if (displayName != null) {
-            sb.append(", displayName=");
-            sb.append(displayName);
+        if (link != null) {
+            sb.append(", link=");
+            sb.append(link);
         }
-        if (largeIcon != null) {
-            sb.append(", largeIcon=");
-            sb.append(largeIcon);
+        if (getType() != null) {
+            sb.append(", type=");
+            sb.append(getType());
         }
-        if (smallIcon != null) {
-            sb.append(", smallIcon=");
-            sb.append(smallIcon);
+        if (usage != null) {
+            sb.append(", usage=");
+            sb.append(usage);
         }
         if (getDescription() != null) {
             sb.append(", description=");
@@ -111,12 +96,8 @@ public class MessageDestination extends ResourceBase {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result +
-                ((displayName == null) ? 0 : displayName.hashCode());
-        result = prime * result +
-                ((largeIcon == null) ? 0 : largeIcon.hashCode());
-        result = prime * result +
-                ((smallIcon == null) ? 0 : smallIcon.hashCode());
+        result = prime * result + ((link == null) ? 0 : link.hashCode());
+        result = prime * result + ((usage == null) ? 0 : usage.hashCode());
         return result;
     }
 
@@ -132,26 +113,19 @@ public class MessageDestination extends ResourceBase {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        MessageDestination other = (MessageDestination) obj;
-        if (displayName == null) {
-            if (other.displayName != null) {
+        MessageDestinationRef other = (MessageDestinationRef) obj;
+        if (link == null) {
+            if (other.link != null) {
                 return false;
             }
-        } else if (!displayName.equals(other.displayName)) {
+        } else if (!link.equals(other.link)) {
             return false;
         }
-        if (largeIcon == null) {
-            if (other.largeIcon != null) {
+        if (usage == null) {
+            if (other.usage != null) {
                 return false;
             }
-        } else if (!largeIcon.equals(other.largeIcon)) {
-            return false;
-        }
-        if (smallIcon == null) {
-            if (other.smallIcon != null) {
-                return false;
-            }
-        } else if (!smallIcon.equals(other.smallIcon)) {
+        } else if (!usage.equals(other.usage)) {
             return false;
         }
         return true;

@@ -14,18 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
+
 
 /**
- * <p>Representation of a message destination reference for a web application,
- * as represented in a <code>&lt;message-destination-ref&gt;</code> element
- * in the deployment descriptor.</p>
+ * Representation of an application environment entry, as represented in
+ * an <code>&lt;env-entry&gt;</code> element in the deployment descriptor.
  *
  * @author Craig R. McClanahan
  * @version $Id$
- * @since Tomcat 5.0
  */
-public class MessageDestinationRef extends ResourceBase {
+public class ContextEnvironment extends ResourceBase {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,31 +32,33 @@ public class MessageDestinationRef extends ResourceBase {
 
 
     /**
-     * The link of this destination ref.
+     * Does this environment entry allow overrides by the application
+     * deployment descriptor?
      */
-    private String link = null;
+    private boolean override = true;
 
-    public String getLink() {
-        return (this.link);
+    public boolean getOverride() {
+        return (this.override);
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setOverride(boolean override) {
+        this.override = override;
     }
 
 
     /**
-     * The usage of this destination ref.
+     * The value of this environment entry.
      */
-    private String usage = null;
+    private String value = null;
 
-    public String getUsage() {
-        return (this.usage);
+    public String getValue() {
+        return (this.value);
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setValue(String value) {
+        this.value = value;
     }
+
 
     // --------------------------------------------------------- Public Methods
 
@@ -68,27 +69,26 @@ public class MessageDestinationRef extends ResourceBase {
     @Override
     public String toString() {
 
-        StringBuilder sb = new StringBuilder("MessageDestination[");
+        StringBuilder sb = new StringBuilder("ContextEnvironment[");
         sb.append("name=");
         sb.append(getName());
-        if (link != null) {
-            sb.append(", link=");
-            sb.append(link);
+        if (getDescription() != null) {
+            sb.append(", description=");
+            sb.append(getDescription());
         }
         if (getType() != null) {
             sb.append(", type=");
             sb.append(getType());
         }
-        if (usage != null) {
-            sb.append(", usage=");
-            sb.append(usage);
+        if (value != null) {
+            sb.append(", value=");
+            sb.append(value);
         }
-        if (getDescription() != null) {
-            sb.append(", description=");
-            sb.append(getDescription());
-        }
+        sb.append(", override=");
+        sb.append(override);
         sb.append("]");
         return (sb.toString());
+
     }
 
 
@@ -96,8 +96,8 @@ public class MessageDestinationRef extends ResourceBase {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((link == null) ? 0 : link.hashCode());
-        result = prime * result + ((usage == null) ? 0 : usage.hashCode());
+        result = prime * result + (override ? 1231 : 1237);
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
 
@@ -113,19 +113,15 @@ public class MessageDestinationRef extends ResourceBase {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        MessageDestinationRef other = (MessageDestinationRef) obj;
-        if (link == null) {
-            if (other.link != null) {
-                return false;
-            }
-        } else if (!link.equals(other.link)) {
+        ContextEnvironment other = (ContextEnvironment) obj;
+        if (override != other.override) {
             return false;
         }
-        if (usage == null) {
-            if (other.usage != null) {
+        if (value == null) {
+            if (other.value != null) {
                 return false;
             }
-        } else if (!usage.equals(other.usage)) {
+        } else if (!value.equals(other.value)) {
             return false;
         }
         return true;

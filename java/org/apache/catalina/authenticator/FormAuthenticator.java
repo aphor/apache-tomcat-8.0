@@ -32,7 +32,6 @@ import org.apache.catalina.Manager;
 import org.apache.catalina.Realm;
 import org.apache.catalina.Session;
 import org.apache.catalina.connector.Request;
-import org.apache.catalina.deploy.LoginConfig;
 import org.apache.coyote.ActionCode;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
@@ -41,6 +40,7 @@ import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.MimeHeaders;
+import org.apache.tomcat.util.xml.LoginConfig;
 
 /**
  * An <b>Authenticator</b> and <b>Valve</b> implementation of FORM BASED

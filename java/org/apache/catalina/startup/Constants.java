@@ -130,29 +130,18 @@ public final class Constants {
         "/javax/servlet/jsp/resources/web-jsptaglibrary_2_1.xsd";
 
 
-    // web.xml
-    public static final String WebDtdPublicId_22 =
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN";
     public static final String WebDtdResourcePath_22 =
         "/javax/servlet/resources/web-app_2_2.dtd";
 
-    public static final String WebDtdPublicId_23 =
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN";
     public static final String WebDtdResourcePath_23 =
         "/javax/servlet/resources/web-app_2_3.dtd";
 
-    public static final String WebSchemaPublicId_24 =
-        "web-app_2_4.xsd";
     public static final String WebSchemaResourcePath_24 =
         "/javax/servlet/resources/web-app_2_4.xsd";
 
-    public static final String WebSchemaPublicId_25 =
-        "web-app_2_5.xsd";
     public static final String WebSchemaResourcePath_25 =
         "/javax/servlet/resources/web-app_2_5.xsd";
 
-    public static final String WebSchemaPublicId_30 =
-        "web-app_3_0.xsd";
     public static final String WebSchemaResourcePath_30 =
         "/javax/servlet/resources/web-app_3_0.xsd";
 
@@ -161,8 +150,6 @@ public final class Constants {
     public static final String WebCommonSchemaResourcePath_30 =
         "/javax/servlet/resources/web-common_3_0.xsd";
 
-    public static final String WebFragmentSchemaPublicId_30 =
-        "web-fragment_3_0.xsd";
     public static final String WebFragmentSchemaResourcePath_30 =
         "/javax/servlet/resources/web-fragment_3_0.xsd";
 

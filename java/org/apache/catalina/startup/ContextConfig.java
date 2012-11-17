@@ -40,11 +40,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
+import javax.servlet.SessionCookieConfig;
 import javax.servlet.annotation.HandlesTypes;
+import javax.servlet.descriptor.JspPropertyGroupDescriptor;
+import javax.servlet.descriptor.TaglibDescriptor;
 
 import org.apache.catalina.Authenticator;
 import org.apache.catalina.Container;
@@ -62,15 +67,10 @@ import org.apache.catalina.Valve;
 import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.core.ApplicationJspPropertyGroupDescriptor;
+import org.apache.catalina.core.ApplicationTaglibDescriptor;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardHost;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.SecurityConstraint;
-import org.apache.catalina.deploy.ServletDef;
-import org.apache.catalina.deploy.WebXml;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.Introspection;
 import org.apache.juli.logging.Log;
@@ -91,6 +91,23 @@ import org.apache.tomcat.util.digester.RuleSet;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.scan.Jar;
 import org.apache.tomcat.util.scan.JarFactory;
+import org.apache.tomcat.util.xml.ContextEjb;
+import org.apache.tomcat.util.xml.ContextEnvironment;
+import org.apache.tomcat.util.xml.ContextLocalEjb;
+import org.apache.tomcat.util.xml.ContextResource;
+import org.apache.tomcat.util.xml.ContextResourceEnvRef;
+import org.apache.tomcat.util.xml.ContextService;
+import org.apache.tomcat.util.xml.ErrorPage;
+import org.apache.tomcat.util.xml.FilterDef;
+import org.apache.tomcat.util.xml.FilterMap;
+import org.apache.tomcat.util.xml.JspPropertyGroup;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.MessageDestinationRef;
+import org.apache.tomcat.util.xml.MultipartDef;
+import org.apache.tomcat.util.xml.SecurityConstraint;
+import org.apache.tomcat.util.xml.SecurityRoleRef;
+import org.apache.tomcat.util.xml.ServletDef;
+import org.apache.tomcat.util.xml.WebXml;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
@@ -1215,12 +1232,12 @@ public class ContextConfig implements LifecycleListener {
 
             // Step 9. Apply merged web.xml to Context
             if (ok) {
-                webXml.configureContext(context);
+                configureContext(webXml);
             }
         } else {
             webXml.merge(defaults);
             convertJsps(webXml);
-            webXml.configureContext(context);
+            configureContext(webXml);
         }
 
         // Step 9a. Make the merged web.xml available to other
@@ -2599,6 +2616,209 @@ for (String interfaceName : cacheEntry.getInterfaceNames()) {
 
         public void setSciSet(Set<ServletContainerInitializer> sciSet) {
             this.sciSet = sciSet;
+        }
+    }
+
+    /**
+     * Configure a {@link Context} using the stored web.xml representation.
+     *
+     * @param context   The context to be configured
+     */
+    public void configureContext(WebXml webXml) {
+        // As far as possible, process in alphabetical order so it is easy to
+        // check everything is present
+        // Some validation depends on correct public ID
+        context.setPublicId(webXml.getPublicId());
+
+        // Everything else in order
+        context.setEffectiveMajorVersion(webXml.getMajorVersion());
+        context.setEffectiveMinorVersion(webXml.getMinorVersion());
+
+        for (Entry<String, String> entry : webXml.getContextParams().entrySet()) {
+            context.addParameter(entry.getKey(), entry.getValue());
+        }
+        context.setDisplayName(webXml.getDisplayName());
+        context.setDistributable(webXml.isDistributable());
+        for (ContextLocalEjb ejbLocalRef : webXml.getEjbLocalRefs().values()) {
+            context.getNamingResources().addLocalEjb(ejbLocalRef);
+        }
+        for (ContextEjb ejbRef : webXml.getEjbRefs().values()) {
+            context.getNamingResources().addEjb(ejbRef);
+        }
+        for (ContextEnvironment environment : webXml.getEnvEntries().values()) {
+            context.getNamingResources().addEnvironment(environment);
+        }
+        for (ErrorPage errorPage : webXml.getErrorPages().values()) {
+            context.addErrorPage(errorPage);
+        }
+        for (FilterDef filter : webXml.getFilters().values()) {
+            if (filter.getAsyncSupported() == null) {
+                filter.setAsyncSupported("false");
+            }
+            context.addFilterDef(filter);
+        }
+        for (FilterMap filterMap : webXml.getFilterMappings()) {
+            context.addFilterMap(filterMap);
+        }
+        for (JspPropertyGroup jspPropertyGroup : webXml.getJspPropertyGroups()) {
+            JspPropertyGroupDescriptor descriptor =
+                new ApplicationJspPropertyGroupDescriptor(jspPropertyGroup);
+            context.getJspConfigDescriptor().getJspPropertyGroups().add(
+                    descriptor);
+        }
+        for (String listener : webXml.getListeners()) {
+            context.addApplicationListener(listener);
+        }
+        for (Entry<String, String> entry : webXml.getLocalEncodingMappings().entrySet()) {
+            context.addLocaleEncodingMappingParameter(entry.getKey(),
+                    entry.getValue());
+        }
+        // Prevents IAE
+        if (webXml.getLoginConfig() != null) {
+            context.setLoginConfig(webXml.getLoginConfig());
+        }
+        for (MessageDestinationRef mdr : webXml.getMessageDestinationRefs().values()) {
+            context.getNamingResources().addMessageDestinationRef(mdr);
+        }
+
+        // messageDestinations were ignored in Tomcat 6, so ignore here
+
+        context.setIgnoreAnnotations(webXml.isMetadataComplete());
+        for (Entry<String, String> entry : webXml.getMimeMappings().entrySet()) {
+            context.addMimeMapping(entry.getKey(), entry.getValue());
+        }
+        // Name is just used for ordering
+        for (ContextResourceEnvRef resource : webXml.getResourceEnvRefs().values()) {
+            context.getNamingResources().addResourceEnvRef(resource);
+        }
+        for (ContextResource resource : webXml.getResourceRefs().values()) {
+            context.getNamingResources().addResource(resource);
+        }
+        for (SecurityConstraint constraint : webXml.getSecurityConstraints()) {
+            context.addConstraint(constraint);
+        }
+        for (String role : webXml.getSecurityRoles()) {
+            context.addSecurityRole(role);
+        }
+        for (ContextService service : webXml.getServiceRefs().values()) {
+            context.getNamingResources().addService(service);
+        }
+        for (ServletDef servlet : webXml.getServlets().values()) {
+            Wrapper wrapper = context.createWrapper();
+            // Description is ignored
+            // Display name is ignored
+            // Icons are ignored
+
+            // jsp-file gets passed to the JSP Servlet as an init-param
+
+            if (servlet.getLoadOnStartup() != null) {
+                wrapper.setLoadOnStartup(servlet.getLoadOnStartup().intValue());
+            }
+            if (servlet.getEnabled() != null) {
+                wrapper.setEnabled(servlet.getEnabled().booleanValue());
+            }
+            wrapper.setName(servlet.getServletName());
+            Map<String,String> params = servlet.getParameterMap();
+            for (Entry<String, String> entry : params.entrySet()) {
+                wrapper.addInitParameter(entry.getKey(), entry.getValue());
+            }
+            wrapper.setRunAs(servlet.getRunAs());
+            Set<SecurityRoleRef> roleRefs = servlet.getSecurityRoleRefs();
+            for (SecurityRoleRef roleRef : roleRefs) {
+                wrapper.addSecurityReference(
+                        roleRef.getName(), roleRef.getLink());
+            }
+            wrapper.setServletClass(servlet.getServletClass());
+            MultipartDef multipartdef = servlet.getMultipartDef();
+            if (multipartdef != null) {
+                if (multipartdef.getMaxFileSize() != null &&
+                        multipartdef.getMaxRequestSize()!= null &&
+                        multipartdef.getFileSizeThreshold() != null) {
+                    wrapper.setMultipartConfigElement(new MultipartConfigElement(
+                            multipartdef.getLocation(),
+                            Long.parseLong(multipartdef.getMaxFileSize()),
+                            Long.parseLong(multipartdef.getMaxRequestSize()),
+                            Integer.parseInt(
+                                    multipartdef.getFileSizeThreshold())));
+                } else {
+                    wrapper.setMultipartConfigElement(new MultipartConfigElement(
+                            multipartdef.getLocation()));
+                }
+            }
+            if (servlet.getAsyncSupported() != null) {
+                wrapper.setAsyncSupported(
+                        servlet.getAsyncSupported().booleanValue());
+            }
+            wrapper.setOverridable(servlet.isOverridable());
+            context.addChild(wrapper);
+        }
+        for (Entry<String, String> entry : webXml.getServletMappings().entrySet()) {
+            context.addServletMapping(entry.getKey(), entry.getValue());
+        }
+        if (webXml.getSessionConfig() != null) {
+            if (webXml.getSessionConfig().getSessionTimeout() != null) {
+                context.setSessionTimeout(
+                		webXml.getSessionConfig().getSessionTimeout().intValue());
+            }
+            SessionCookieConfig scc =
+                context.getServletContext().getSessionCookieConfig();
+            scc.setName(webXml.getSessionConfig().getCookieName());
+            scc.setDomain(webXml.getSessionConfig().getCookieDomain());
+            scc.setPath(webXml.getSessionConfig().getCookiePath());
+            scc.setComment(webXml.getSessionConfig().getCookieComment());
+            if (webXml.getSessionConfig().getCookieHttpOnly() != null) {
+                scc.setHttpOnly(webXml.getSessionConfig().getCookieHttpOnly().booleanValue());
+            }
+            if (webXml.getSessionConfig().getCookieSecure() != null) {
+                scc.setSecure(webXml.getSessionConfig().getCookieSecure().booleanValue());
+            }
+            if (webXml.getSessionConfig().getCookieMaxAge() != null) {
+                scc.setMaxAge(webXml.getSessionConfig().getCookieMaxAge().intValue());
+            }
+            if (webXml.getSessionConfig().getSessionTrackingModes().size() > 0) {
+                context.getServletContext().setSessionTrackingModes(
+                		webXml.getSessionConfig().getSessionTrackingModes());
+            }
+        }
+        for (Entry<String, String> entry : webXml.getTaglibs().entrySet()) {
+            TaglibDescriptor descriptor = new ApplicationTaglibDescriptor(
+                    entry.getValue(), entry.getKey());
+            context.getJspConfigDescriptor().getTaglibs().add(descriptor);
+        }
+
+        // Context doesn't use version directly
+
+        for (String welcomeFile : webXml.getWelcomeFiles()) {
+            /*
+             * The following will result in a welcome file of "" so don't add
+             * that to the context
+             * <welcome-file-list>
+             *   <welcome-file/>
+             * </welcome-file-list>
+             */
+            if (welcomeFile != null && welcomeFile.length() > 0) {
+                context.addWelcomeFile(welcomeFile);
+            }
+        }
+
+        // Do this last as it depends on servlets
+        for (JspPropertyGroup jspPropertyGroup : webXml.getJspPropertyGroups()) {
+            String jspServletName = context.findServletMapping("*.jsp");
+            if (jspServletName == null) {
+                jspServletName = "jsp";
+            }
+            if (context.findChild(jspServletName) != null) {
+                for (String urlPattern : jspPropertyGroup.getUrlPatterns()) {
+                    context.addServletMapping(urlPattern, jspServletName, true);
+                }
+            } else {
+                if(log.isDebugEnabled()) {
+                    for (String urlPattern : jspPropertyGroup.getUrlPatterns()) {
+                        log.debug("Skiping " + urlPattern + " , no servlet " +
+                                jspServletName);
+                    }
+                }
+            }
         }
     }
 }

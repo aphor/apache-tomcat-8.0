@@ -33,8 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.Host;
-import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.ServerInfo;
+import org.apache.tomcat.util.http.RequestUtil;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
