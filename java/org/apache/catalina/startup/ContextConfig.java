@@ -108,6 +108,8 @@ import org.apache.tomcat.util.xml.SecurityConstraint;
 import org.apache.tomcat.util.xml.SecurityRoleRef;
 import org.apache.tomcat.util.xml.ServletDef;
 import org.apache.tomcat.util.xml.WebXml;
+import org.apache.tomcat.util.xml.parser.WebXmlParser;
+import org.apache.tomcat.util.xml.parser.XmlErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
@@ -261,19 +263,7 @@ public class ContextConfig implements LifecycleListener {
      */
     protected boolean handlesTypesNonAnnotations = false;
 
-    /**
-     * The <code>Digester</code> we will use to process web application
-     * deployment descriptor files.
-     */
-    protected Digester webDigester = null;
-    protected WebRuleSet webRuleSet = null;
-
-    /**
-     * The <code>Digester</code> we will use to process web fragment
-     * deployment descriptor files.
-     */
-    protected Digester webFragmentDigester = null;
-    protected WebRuleSet webFragmentRuleSet = null;
+    private WebXmlParser webXmlParser;
 
 
     // ------------------------------------------------------------- Properties
@@ -471,24 +461,6 @@ public class ContextConfig implements LifecycleListener {
         }
     }
 
-
-    /**
-     * Create and return a Digester configured to process the
-     * web application deployment descriptor (web.xml).
-     */
-    public void createWebXmlDigester(boolean namespaceAware,
-            boolean validation) {
-
-        webRuleSet = new WebRuleSet(false);
-        webDigester = DigesterFactory.newDigester(validation,
-                namespaceAware, webRuleSet);
-        webDigester.getParser();
-
-        webFragmentRuleSet = new WebRuleSet(true);
-        webFragmentDigester = DigesterFactory.newDigester(validation,
-                namespaceAware, webFragmentRuleSet);
-        webFragmentDigester.getParser();
-    }
 
 
     /**
@@ -788,7 +760,7 @@ public class ContextConfig implements LifecycleListener {
 
         contextConfig(contextDigester);
 
-        createWebXmlDigester(context.getXmlNamespaceAware(),
+        webXmlParser = new WebXmlParser(context.getXmlNamespaceAware(),
                 context.getXmlValidation());
 
         try {
@@ -1170,8 +1142,10 @@ public class ContextConfig implements LifecycleListener {
 
         // Parse context level web.xml
         InputSource contextWebXml = getContextWebXmlSource();
-        parseWebXml(contextWebXml, webXml, false);
-
+        if (!webXmlParser.parseWebXml(contextWebXml, webXml, false)) {
+            ok = false;
+        }
+        
         ServletContext sContext = context.getServletContext();
 
         // Ordering is important here
@@ -1355,15 +1329,20 @@ public class ContextConfig implements LifecycleListener {
                 // This is unusual enough to log
                 log.info(sm.getString("contextConfig.defaultMissing"));
             } else {
-                parseWebXml(globalWebXml, webXmlDefaultFragment, false);
+                if (!webXmlParser.parseWebXml(globalWebXml, webXmlDefaultFragment, false)) {
+                    ok = false;
+                }
             }
 
             // Parse host level web.xml if present
             // Additive apart from welcome pages
             webXmlDefaultFragment.setReplaceWelcomeFiles(true);
 
-            parseWebXml(hostWebXml, webXmlDefaultFragment, false);
-
+            if (!webXmlParser.parseWebXml(hostWebXml, webXmlDefaultFragment,
+                    false)) {
+                ok = false;
+            }
+            
             // Don't update the cache if an error occurs
             if (globalTimeStamp != -1 && hostTimeStamp != -1) {
                 entry = new DefaultWebXmlCacheEntry(webXmlDefaultFragment,
@@ -1741,57 +1720,6 @@ public class ContextConfig implements LifecycleListener {
     }
 
 
-    protected void parseWebXml(InputSource source, WebXml dest,
-            boolean fragment) {
-
-        if (source == null) {
-            return;
-        }
-
-        XmlErrorHandler handler = new XmlErrorHandler();
-
-        Digester digester;
-        WebRuleSet ruleSet;
-        if (fragment) {
-            digester = webFragmentDigester;
-            ruleSet = webFragmentRuleSet;
-        } else {
-            digester = webDigester;
-            ruleSet = webRuleSet;
-        }
-
-        digester.push(dest);
-        digester.setErrorHandler(handler);
-
-        if(log.isDebugEnabled()) {
-            log.debug(sm.getString("contextConfig.applicationStart",
-                    source.getSystemId()));
-        }
-
-        try {
-            digester.parse(source);
-
-            if (handler.getWarnings().size() > 0 ||
-                    handler.getErrors().size() > 0) {
-                ok = false;
-                handler.logFindings(log, source.getSystemId());
-            }
-        } catch (SAXParseException e) {
-            log.error(sm.getString("contextConfig.applicationParse",
-                    source.getSystemId()), e);
-            log.error(sm.getString("contextConfig.applicationPosition",
-                             "" + e.getLineNumber(),
-                             "" + e.getColumnNumber()));
-            ok = false;
-        } catch (Exception e) {
-            log.error(sm.getString("contextConfig.applicationParse",
-                    source.getSystemId()), e);
-            ok = false;
-        } finally {
-            digester.reset();
-            ruleSet.recycle();
-        }
-    }
 
 
     /**
@@ -2500,7 +2428,9 @@ for (String interfaceName : cacheEntry.getInterfaceNames()) {
                     InputSource source = new InputSource(
                             resourceURL.toString() + "!/" + FRAGMENT_LOCATION);
                     source.setByteStream(is);
-                    parseWebXml(source, fragment, true);
+                    if (!webXmlParser.parseWebXml(source, fragment, true)) {
+                        ok = false;
+                    }
                 }
             } finally {
                 if (is != null) {
@@ -2534,7 +2464,9 @@ for (String interfaceName : cacheEntry.getInterfaceNames()) {
                     InputSource source =
                         new InputSource(fragmentFile.toURI().toURL().toString());
                     source.setByteStream(stream);
-                    parseWebXml(source, fragment, true);
+                    if (!webXmlParser.parseWebXml(source, fragment, true)) {
+                        ok = false;
+                    }
                 }
             } finally {
                 if (stream != null) {
@@ -2622,7 +2554,7 @@ for (String interfaceName : cacheEntry.getInterfaceNames()) {
     /**
      * Configure a {@link Context} using the stored web.xml representation.
      *
-     * @param context   The context to be configured
+     * @param webXml The stored web.xml representation that will be used for configuring the {@link Context}
      */
     public void configureContext(WebXml webXml) {
         // As far as possible, process in alphabetical order so it is easy to

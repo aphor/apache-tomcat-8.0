@@ -16,7 +16,7 @@
  */
 
 
-package org.apache.catalina.startup;
+package org.apache.tomcat.util.xml.parser;
 
 
 import java.lang.reflect.Method;
@@ -219,10 +219,10 @@ public class WebRuleSet extends RuleSetBase {
         configureNamingRules(digester);
 
         digester.addObjectCreate(fullPrefix + "/error-page",
-                                 "org.apache.catalina.deploy.ErrorPage");
+                                 "org.apache.tomcat.util.xml.ErrorPage");
         digester.addSetNext(fullPrefix + "/error-page",
                             "addErrorPage",
-                            "org.apache.catalina.deploy.ErrorPage");
+                            "org.apache.tomcat.util.xml.ErrorPage");
 
         digester.addCallMethod(fullPrefix + "/error-page/error-code",
                                "setErrorCode", 0);
@@ -232,10 +232,10 @@ public class WebRuleSet extends RuleSetBase {
                                "setLocation", 0);
 
         digester.addObjectCreate(fullPrefix + "/filter",
-                                 "org.apache.catalina.deploy.FilterDef");
+                                 "org.apache.tomcat.util.xml.FilterDef");
         digester.addSetNext(fullPrefix + "/filter",
                             "addFilter",
-                            "org.apache.catalina.deploy.FilterDef");
+                            "org.apache.tomcat.util.xml.FilterDef");
 
         digester.addCallMethod(fullPrefix + "/filter/description",
                                "setDescription", 0);
@@ -260,10 +260,10 @@ public class WebRuleSet extends RuleSetBase {
                               1);
 
         digester.addObjectCreate(fullPrefix + "/filter-mapping",
-                                 "org.apache.catalina.deploy.FilterMap");
+                                 "org.apache.tomcat.util.xml.FilterMap");
         digester.addSetNext(fullPrefix + "/filter-mapping",
                                  "addFilterMapping",
-                                 "org.apache.catalina.deploy.FilterMap");
+                                 "org.apache.tomcat.util.xml.FilterMap");
 
         digester.addCallMethod(fullPrefix + "/filter-mapping/filter-name",
                                "setFilterName", 0);
@@ -282,10 +282,10 @@ public class WebRuleSet extends RuleSetBase {
                          jspConfig);
 
         digester.addObjectCreate(fullPrefix + "/jsp-config/jsp-property-group",
-                                 "org.apache.catalina.deploy.JspPropertyGroup");
+                                 "org.apache.tomcat.util.xml.JspPropertyGroup");
         digester.addSetNext(fullPrefix + "/jsp-config/jsp-property-group",
                             "addJspPropertyGroup",
-                            "org.apache.catalina.deploy.JspPropertyGroup");
+                            "org.apache.tomcat.util.xml.JspPropertyGroup");
         digester.addCallMethod(fullPrefix + "/jsp-config/jsp-property-group/deferred-syntax-allowed-as-literal",
                                "setDeferredSyntax", 0);
         digester.addCallMethod(fullPrefix + "/jsp-config/jsp-property-group/el-ignored",
@@ -315,10 +315,10 @@ public class WebRuleSet extends RuleSetBase {
                          loginConfig);
 
         digester.addObjectCreate(fullPrefix + "/login-config",
-                                 "org.apache.catalina.deploy.LoginConfig");
+                                 "org.apache.tomcat.util.xml.LoginConfig");
         digester.addSetNext(fullPrefix + "/login-config",
                             "setLoginConfig",
-                            "org.apache.catalina.deploy.LoginConfig");
+                            "org.apache.tomcat.util.xml.LoginConfig");
 
         digester.addCallMethod(fullPrefix + "/login-config/auth-method",
                                "setAuthMethod", 0);
@@ -336,10 +336,10 @@ public class WebRuleSet extends RuleSetBase {
 
 
         digester.addObjectCreate(fullPrefix + "/security-constraint",
-                                 "org.apache.catalina.deploy.SecurityConstraint");
+                                 "org.apache.tomcat.util.xml.SecurityConstraint");
         digester.addSetNext(fullPrefix + "/security-constraint",
                             "addSecurityConstraint",
-                            "org.apache.catalina.deploy.SecurityConstraint");
+                            "org.apache.tomcat.util.xml.SecurityConstraint");
 
         digester.addRule(fullPrefix + "/security-constraint/auth-constraint",
                          new SetAuthConstraintRule());
@@ -351,10 +351,10 @@ public class WebRuleSet extends RuleSetBase {
                                "setUserConstraint", 0);
 
         digester.addObjectCreate(fullPrefix + "/security-constraint/web-resource-collection",
-                                 "org.apache.catalina.deploy.SecurityCollection");
+                                 "org.apache.tomcat.util.xml.SecurityCollection");
         digester.addSetNext(fullPrefix + "/security-constraint/web-resource-collection",
                             "addCollection",
-                            "org.apache.catalina.deploy.SecurityCollection");
+                            "org.apache.tomcat.util.xml.SecurityCollection");
         digester.addCallMethod(fullPrefix + "/security-constraint/web-resource-collection/http-method",
                                "addMethod", 0);
         digester.addCallMethod(fullPrefix + "/security-constraint/web-resource-collection/http-method-omission",
@@ -371,7 +371,7 @@ public class WebRuleSet extends RuleSetBase {
                          new ServletDefCreateRule());
         digester.addSetNext(fullPrefix + "/servlet",
                             "addServlet",
-                            "org.apache.catalina.deploy.ServletDef");
+                            "org.apache.tomcat.util.xml.ServletDef");
 
         digester.addCallMethod(fullPrefix + "/servlet/init-param",
                                "addInitParameter", 2);
@@ -388,10 +388,10 @@ public class WebRuleSet extends RuleSetBase {
                                "setRunAs", 0);
 
         digester.addObjectCreate(fullPrefix + "/servlet/security-role-ref",
-                                 "org.apache.catalina.deploy.SecurityRoleRef");
+                                 "org.apache.tomcat.util.xml.SecurityRoleRef");
         digester.addSetNext(fullPrefix + "/servlet/security-role-ref",
                             "addSecurityRoleRef",
-                            "org.apache.catalina.deploy.SecurityRoleRef");
+                            "org.apache.tomcat.util.xml.SecurityRoleRef");
         digester.addCallMethod(fullPrefix + "/servlet/security-role-ref/role-link",
                                "setLink", 0);
         digester.addCallMethod(fullPrefix + "/servlet/security-role-ref/role-name",
@@ -403,10 +403,10 @@ public class WebRuleSet extends RuleSetBase {
                               "setServletName", 0);
 
         digester.addObjectCreate(fullPrefix + "/servlet/multipart-config",
-                                 "org.apache.catalina.deploy.MultipartDef");
+                                 "org.apache.tomcat.util.xml.MultipartDef");
         digester.addSetNext(fullPrefix + "/servlet/multipart-config",
                             "setMultipartDef",
-                            "org.apache.catalina.deploy.MultipartDef");
+                            "org.apache.tomcat.util.xml.MultipartDef");
         digester.addCallMethod(fullPrefix + "/servlet/multipart-config/location",
                                "setLocation", 0);
         digester.addCallMethod(fullPrefix + "/servlet/multipart-config/max-file-size",
@@ -429,9 +429,9 @@ public class WebRuleSet extends RuleSetBase {
 
         digester.addRule(fullPrefix + "/session-config", sessionConfig);
         digester.addObjectCreate(fullPrefix + "/session-config",
-                                 "org.apache.catalina.deploy.SessionConfig");
+                                 "org.apache.tomcat.util.xml.SessionConfig");
         digester.addSetNext(fullPrefix + "/session-config", "setSessionConfig",
-                            "org.apache.catalina.deploy.SessionConfig");
+                            "org.apache.tomcat.util.xml.SessionConfig");
         digester.addCallMethod(fullPrefix + "/session-config/session-timeout",
                                "setSessionTimeout", 0);
         digester.addCallMethod(fullPrefix + "/session-config/cookie-config/name",
@@ -478,10 +478,10 @@ public class WebRuleSet extends RuleSetBase {
     protected void configureNamingRules(Digester digester) {
         //ejb-local-ref
         digester.addObjectCreate(fullPrefix + "/ejb-local-ref",
-                                 "org.apache.catalina.deploy.ContextLocalEjb");
+                                 "org.apache.tomcat.util.xml.ContextLocalEjb");
         digester.addSetNext(fullPrefix + "/ejb-local-ref",
                             "addEjbLocalRef",
-                            "org.apache.catalina.deploy.ContextLocalEjb");
+                            "org.apache.tomcat.util.xml.ContextLocalEjb");
         digester.addCallMethod(fullPrefix + "/ejb-local-ref/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/ejb-local-ref/ejb-link",
@@ -500,10 +500,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //ejb-ref
         digester.addObjectCreate(fullPrefix + "/ejb-ref",
-                                 "org.apache.catalina.deploy.ContextEjb");
+                                 "org.apache.tomcat.util.xml.ContextEjb");
         digester.addSetNext(fullPrefix + "/ejb-ref",
                             "addEjbRef",
-                            "org.apache.catalina.deploy.ContextEjb");
+                            "org.apache.tomcat.util.xml.ContextEjb");
         digester.addCallMethod(fullPrefix + "/ejb-ref/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/ejb-ref/ejb-link",
@@ -522,10 +522,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //env-entry
         digester.addObjectCreate(fullPrefix + "/env-entry",
-                                 "org.apache.catalina.deploy.ContextEnvironment");
+                                 "org.apache.tomcat.util.xml.ContextEnvironment");
         digester.addSetNext(fullPrefix + "/env-entry",
                             "addEnvEntry",
-                            "org.apache.catalina.deploy.ContextEnvironment");
+                            "org.apache.tomcat.util.xml.ContextEnvironment");
         digester.addCallMethod(fullPrefix + "/env-entry/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/env-entry/env-entry-name",
@@ -540,10 +540,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //resource-env-ref
         digester.addObjectCreate(fullPrefix + "/resource-env-ref",
-            "org.apache.catalina.deploy.ContextResourceEnvRef");
+            "org.apache.tomcat.util.xml.ContextResourceEnvRef");
         digester.addSetNext(fullPrefix + "/resource-env-ref",
                             "addResourceEnvRef",
-                            "org.apache.catalina.deploy.ContextResourceEnvRef");
+                            "org.apache.tomcat.util.xml.ContextResourceEnvRef");
         digester.addCallMethod(fullPrefix + "/resource-env-ref/resource-env-ref-name",
                 "setName", 0);
         digester.addCallMethod(fullPrefix + "/resource-env-ref/resource-env-ref-type",
@@ -554,10 +554,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //message-destination
         digester.addObjectCreate(fullPrefix + "/message-destination",
-                                 "org.apache.catalina.deploy.MessageDestination");
+                                 "org.apache.tomcat.util.xml.MessageDestination");
         digester.addSetNext(fullPrefix + "/message-destination",
                             "addMessageDestination",
-                            "org.apache.catalina.deploy.MessageDestination");
+                            "org.apache.tomcat.util.xml.MessageDestination");
         digester.addCallMethod(fullPrefix + "/message-destination/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/message-destination/display-name",
@@ -573,10 +573,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //message-destination-ref
         digester.addObjectCreate(fullPrefix + "/message-destination-ref",
-                                 "org.apache.catalina.deploy.MessageDestinationRef");
+                                 "org.apache.tomcat.util.xml.MessageDestinationRef");
         digester.addSetNext(fullPrefix + "/message-destination-ref",
                             "addMessageDestinationRef",
-                            "org.apache.catalina.deploy.MessageDestinationRef");
+                            "org.apache.tomcat.util.xml.MessageDestinationRef");
         digester.addCallMethod(fullPrefix + "/message-destination-ref/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/message-destination-ref/message-destination-link",
@@ -593,10 +593,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //resource-ref
         digester.addObjectCreate(fullPrefix + "/resource-ref",
-                                 "org.apache.catalina.deploy.ContextResource");
+                                 "org.apache.tomcat.util.xml.ContextResource");
         digester.addSetNext(fullPrefix + "/resource-ref",
                             "addResourceRef",
-                            "org.apache.catalina.deploy.ContextResource");
+                            "org.apache.tomcat.util.xml.ContextResource");
         digester.addCallMethod(fullPrefix + "/resource-ref/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/resource-ref/res-auth",
@@ -613,10 +613,10 @@ public class WebRuleSet extends RuleSetBase {
 
         //service-ref
         digester.addObjectCreate(fullPrefix + "/service-ref",
-                                 "org.apache.catalina.deploy.ContextService");
+                                 "org.apache.tomcat.util.xml.ContextService");
         digester.addSetNext(fullPrefix + "/service-ref",
                             "addServiceRef",
-                            "org.apache.catalina.deploy.ContextService");
+                            "org.apache.tomcat.util.xml.ContextService");
         digester.addCallMethod(fullPrefix + "/service-ref/description",
                                "setDescription", 0);
         digester.addCallMethod(fullPrefix + "/service-ref/display-name",
@@ -643,10 +643,10 @@ public class WebRuleSet extends RuleSetBase {
         digester.addRule(fullPrefix + "/service-ref/port-component-ref/port-component-link", new CallParamMultiRule(1));
 
         digester.addObjectCreate(fullPrefix + "/service-ref/handler",
-                                 "org.apache.catalina.deploy.ContextHandler");
+                                 "org.apache.tomcat.util.xml.ContextHandler");
         digester.addRule(fullPrefix + "/service-ref/handler",
                          new SetNextRule("addHandler",
-                         "org.apache.catalina.deploy.ContextHandler"));
+                         "org.apache.tomcat.util.xml.ContextHandler"));
 
         digester.addCallMethod(fullPrefix + "/service-ref/handler/handler-name",
                                "setName", 0);
@@ -768,7 +768,7 @@ final class SetSessionConfig extends Rule {
 /**
  * A Rule that calls the <code>setAuthConstraint(true)</code> method of
  * the top item on the stack, which must be of type
- * <code>org.apache.catalina.deploy.SecurityConstraint</code>.
+ * <code>org.apache.tomcat.util.xml.SecurityConstraint</code>.
  */
 
 final class SetAuthConstraintRule extends Rule {

@@ -43,7 +43,6 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.naming.ContextBindings;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
-import org.apache.tomcat.util.xml.Constants;
 import org.apache.tomcat.util.xml.ContextEjb;
 import org.apache.tomcat.util.xml.ContextEnvironment;
 import org.apache.tomcat.util.xml.ContextLocalEjb;

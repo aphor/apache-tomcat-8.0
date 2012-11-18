@@ -16,11 +16,10 @@
  */
 
 
-package org.apache.catalina.startup;
+package org.apache.tomcat.util.xml.parser;
 
 import java.net.URL;
 
-import org.apache.catalina.util.SchemaResolver;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.digester.Digester;
@@ -127,23 +126,23 @@ public class DigesterFactory {
 
         // web.xml
         register(Constants.WebDtdResourcePath_22,
-                 org.apache.tomcat.util.xml.Constants.WebDtdPublicId_22,
+                 Constants.WebDtdPublicId_22,
                  schemaResolver);
 
         register(Constants.WebDtdResourcePath_23,
-                 org.apache.tomcat.util.xml.Constants.WebDtdPublicId_23,
+                 Constants.WebDtdPublicId_23,
                  schemaResolver);
 
         register(Constants.WebSchemaResourcePath_24,
-                 org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_24,
+                 Constants.WebSchemaPublicId_24,
                  schemaResolver);
 
         register(Constants.WebSchemaResourcePath_25,
-                org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_25,
+                Constants.WebSchemaPublicId_25,
                 schemaResolver);
 
         register(Constants.WebSchemaResourcePath_30,
-                org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_30,
+                Constants.WebSchemaPublicId_30,
                 schemaResolver);
 
         register(Constants.WebCommonSchemaResourcePath_30,
@@ -151,7 +150,7 @@ public class DigesterFactory {
                 schemaResolver);
 
         register(Constants.WebFragmentSchemaResourcePath_30,
-                org.apache.tomcat.util.xml.Constants.WebFragmentSchemaPublicId_30,
+                Constants.WebFragmentSchemaPublicId_30,
                 schemaResolver);
 
         // Web Service

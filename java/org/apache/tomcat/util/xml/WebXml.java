@@ -175,29 +175,29 @@ public class WebXml {
         // Update major and minor version
         if (publicId == null) {
             // skip
-        } else if (org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_30.
+        } else if (org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_30.
                 equalsIgnoreCase(publicId) ||
-                org.apache.tomcat.util.xml.Constants.WebFragmentSchemaPublicId_30.
+                org.apache.tomcat.util.xml.parser.Constants.WebFragmentSchemaPublicId_30.
                 equalsIgnoreCase(publicId)) {
             majorVersion = 3;
             minorVersion = 0;
             this.publicId = publicId;
-        } else if (org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_25.
+        } else if (org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_25.
                 equalsIgnoreCase(publicId)) {
             majorVersion = 2;
             minorVersion = 5;
             this.publicId = publicId;
-        } else if (org.apache.tomcat.util.xml.Constants.WebSchemaPublicId_24.
+        } else if (org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_24.
                 equalsIgnoreCase(publicId)) {
             majorVersion = 2;
             minorVersion = 4;
             this.publicId = publicId;
-        } else if (org.apache.tomcat.util.xml.Constants.WebDtdPublicId_23.
+        } else if (org.apache.tomcat.util.xml.parser.Constants.WebDtdPublicId_23.
                 equalsIgnoreCase(publicId)) {
             majorVersion = 2;
             minorVersion = 3;
             this.publicId = publicId;
-        } else if (org.apache.tomcat.util.xml.Constants.WebDtdPublicId_22.
+        } else if (org.apache.tomcat.util.xml.parser.Constants.WebDtdPublicId_22.
                 equalsIgnoreCase(publicId)) {
             majorVersion = 2;
             minorVersion = 2;

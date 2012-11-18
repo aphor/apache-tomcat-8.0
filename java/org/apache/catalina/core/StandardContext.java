@@ -5568,7 +5568,7 @@ public class StandardContext extends ContainerBase
         if (this.publicId == null)
             return (false);
         if (this.publicId.equals
-            (org.apache.tomcat.util.xml.Constants.WebDtdPublicId_22))
+            (org.apache.tomcat.util.xml.parser.Constants.WebDtdPublicId_22))
             return (true);
         else
             return (false);

@@ -43,6 +43,8 @@ import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.scan.Jar;
 import org.apache.tomcat.util.scan.JarFactory;
+import org.apache.tomcat.util.xml.parser.DigesterFactory;
+import org.apache.tomcat.util.xml.parser.XmlErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

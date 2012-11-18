@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.catalina.startup;
+package org.apache.tomcat.util.xml.parser;
 
 import java.util.HashSet;
 import java.util.Set;

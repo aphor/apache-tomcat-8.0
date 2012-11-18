@@ -16,11 +16,11 @@
  */
 
 
-package org.apache.tomcat.util.xml;
+package org.apache.catalina.deploy;
 
 
 public class Constants {
 
-    public static final String Package = "org.apache.tomcat.util.xml";
+    public static final String Package = "org.apache.catalina.deploy";
 
 }
