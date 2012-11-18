@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -75,8 +74,6 @@ import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.Introspection;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.tomcat.JarScanner;
-import org.apache.tomcat.JarScannerCallback;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.bcel.classfile.AnnotationElementValue;
 import org.apache.tomcat.util.bcel.classfile.AnnotationEntry;
@@ -110,6 +107,7 @@ import org.apache.tomcat.util.xml.ServletDef;
 import org.apache.tomcat.util.xml.WebXml;
 import org.apache.tomcat.util.xml.parser.WebXmlParser;
 import org.apache.tomcat.util.xml.parser.XmlErrorHandler;
+import org.apache.tomcat.util.xml.scanner.FragmentJarScanner;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
@@ -1153,8 +1151,17 @@ public class ContextConfig implements LifecycleListener {
         // Step 1. Identify all the JARs packaged with the application
         // If the JARs have a web-fragment.xml it will be parsed at this
         // point.
-        Map<String,WebXml> fragments = processJarsForWebFragments();
+        Boolean parseOperationSuccessful = new Boolean(true);
+        Map<String, WebXml> fragments = 
+                FragmentJarScanner.processJarsForWebFragments(context.getJarScanner(),
+                        webXmlParser, context.getServletContext(), 
+                        context.getLoader().getClassLoader(), pluggabilityJarsToSkip,
+                        parseOperationSuccessful);
 
+        if (!parseOperationSuccessful) {
+            ok = false;
+        }
+        
         // Step 2. Order the fragments.
         Set<WebXml> orderedFragments = null;
         orderedFragments = WebXml.orderWebFragments(webXml, fragments);
@@ -1721,27 +1728,6 @@ public class ContextConfig implements LifecycleListener {
 
 
 
-
-    /**
-     * Scan /WEB-INF/lib for JARs and for each one found add it and any
-     * /META-INF/web-fragment.xml to the resulting Map. web-fragment.xml files
-     * will be parsed before being added to the map. Every JAR will be added and
-     * <code>null</code> will be used if no web-fragment.xml was found. Any JARs
-     * known not contain fragments will be skipped.
-     *
-     * @return A map of JAR name to processed web fragment (if any)
-     */
-    protected Map<String,WebXml> processJarsForWebFragments() {
-
-        JarScanner jarScanner = context.getJarScanner();
-        FragmentJarScannerCallback callback = new FragmentJarScannerCallback();
-
-        jarScanner.scan(context.getServletContext(),
-                context.getLoader().getClassLoader(), callback,
-                pluggabilityJarsToSkip);
-
-        return callback.getFragments();
-    }
 
     protected void processAnnotations(Set<WebXml> fragments,
             boolean handlesTypesOnly) {
@@ -2401,101 +2387,6 @@ for (String interfaceName : cacheEntry.getInterfaceNames()) {
         return result;
     }
 
-    private class FragmentJarScannerCallback implements JarScannerCallback {
-
-        private static final String FRAGMENT_LOCATION =
-            "META-INF/web-fragment.xml";
-        private final Map<String,WebXml> fragments = new HashMap<>();
-
-        @Override
-        public void scan(JarURLConnection jarConn) throws IOException {
-
-            URL url = jarConn.getURL();
-            URL resourceURL = jarConn.getJarFileURL();
-            Jar jar = null;
-            InputStream is = null;
-            WebXml fragment = new WebXml();
-
-            try {
-                jar = JarFactory.newInstance(url);
-                is = jar.getInputStream(FRAGMENT_LOCATION);
-
-                if (is == null) {
-                    // If there is no web.xml, normal JAR no impact on
-                    // distributable
-                    fragment.setDistributable(true);
-                } else {
-                    InputSource source = new InputSource(
-                            resourceURL.toString() + "!/" + FRAGMENT_LOCATION);
-                    source.setByteStream(is);
-                    if (!webXmlParser.parseWebXml(source, fragment, true)) {
-                        ok = false;
-                    }
-                }
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException ioe) {
-                        // Ignore
-                    }
-                }
-                if (jar != null) {
-                    jar.close();
-                }
-                fragment.setURL(url);
-                if (fragment.getName() == null) {
-                    fragment.setName(fragment.getURL().toString());
-                }
-                fragments.put(fragment.getName(), fragment);
-            }
-        }
-
-        @Override
-        public void scan(File file) throws IOException {
-
-            InputStream stream = null;
-            WebXml fragment = new WebXml();
-
-            try {
-                File fragmentFile = new File(file, FRAGMENT_LOCATION);
-                if (fragmentFile.isFile()) {
-                    stream = new FileInputStream(fragmentFile);
-                    InputSource source =
-                        new InputSource(fragmentFile.toURI().toURL().toString());
-                    source.setByteStream(stream);
-                    if (!webXmlParser.parseWebXml(source, fragment, true)) {
-                        ok = false;
-                    }
-                }
-            } finally {
-                if (stream != null) {
-                    try {
-                        stream.close();
-                    } catch (Throwable t) {
-                        ExceptionUtils.handleThrowable(t);
-                    }
-                }
-                fragment.setURL(file.toURI().toURL());
-                if (fragment.getName() == null) {
-                    fragment.setName(fragment.getURL().toString());
-                }
-                fragments.put(fragment.getName(), fragment);
-            }
-        }
-
-
-        @Override
-        public void scanWebInfClasses() {
-            // NO-OP. Fragments unpacked in WEB-INF classes are not handled,
-            // mainly because if there are multiple fragments there is no way to
-            // handle multiple web-fragment.xml files.
-        }
-
-        public Map<String,WebXml> getFragments() {
-            return fragments;
-        }
-    }
 
     private static class DefaultWebXmlCacheEntry {
         private final WebXml webXml;
