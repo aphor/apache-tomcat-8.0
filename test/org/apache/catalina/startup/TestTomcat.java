@@ -45,11 +45,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import org.apache.catalina.deploy.ContextEnvironment;
-import org.apache.catalina.deploy.ContextResourceLink;
 import org.apache.catalina.realm.GenericPrincipal;
 import org.apache.catalina.realm.RealmBase;
 import org.apache.tomcat.util.buf.ByteChunk;
+import org.apache.tomcat.util.xml.ContextEnvironment;
+import org.apache.tomcat.util.xml.ContextResourceLink;
 
 public class TestTomcat extends TomcatBaseTest {
 

@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package org.apache.catalina.deploy;
+package org.apache.tomcat.util.xml;
 
 import static org.junit.Assert.assertEquals;
 
@@ -80,7 +80,7 @@ public class TestWebXml {
         WebXml webxml = new WebXml();
 
         webxml.setPublicId(
-                org.apache.catalina.startup.Constants.WebDtdPublicId_22);
+                org.apache.tomcat.util.xml.parser.Constants.WebDtdPublicId_22);
         assertEquals(2, webxml.getMajorVersion());
         assertEquals(2, webxml.getMinorVersion());
         assertEquals("2.2", webxml.getVersion());
@@ -92,7 +92,7 @@ public class TestWebXml {
         WebXml webxml = new WebXml();
 
         webxml.setPublicId(
-                org.apache.catalina.startup.Constants.WebDtdPublicId_23);
+                org.apache.tomcat.util.xml.parser.Constants.WebDtdPublicId_23);
         assertEquals(2, webxml.getMajorVersion());
         assertEquals(3, webxml.getMinorVersion());
         assertEquals("2.3", webxml.getVersion());
@@ -104,7 +104,7 @@ public class TestWebXml {
         WebXml webxml = new WebXml();
 
         webxml.setPublicId(
-                org.apache.catalina.startup.Constants.WebSchemaPublicId_24);
+                org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_24);
         assertEquals(2, webxml.getMajorVersion());
         assertEquals(4, webxml.getMinorVersion());
         assertEquals("2.4", webxml.getVersion());
@@ -116,7 +116,7 @@ public class TestWebXml {
         WebXml webxml = new WebXml();
 
         webxml.setPublicId(
-                org.apache.catalina.startup.Constants.WebSchemaPublicId_25);
+                org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_25);
         assertEquals(2, webxml.getMajorVersion());
         assertEquals(5, webxml.getMinorVersion());
         assertEquals("2.5", webxml.getVersion());
@@ -128,7 +128,7 @@ public class TestWebXml {
         WebXml webxml = new WebXml();
 
         webxml.setPublicId(
-                org.apache.catalina.startup.Constants.WebSchemaPublicId_30);
+                org.apache.tomcat.util.xml.parser.Constants.WebSchemaPublicId_30);
         assertEquals(3, webxml.getMajorVersion());
         assertEquals(0, webxml.getMinorVersion());
         assertEquals("3.0", webxml.getVersion());

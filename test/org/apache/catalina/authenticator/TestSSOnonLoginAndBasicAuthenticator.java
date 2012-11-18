@@ -28,14 +28,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.SecurityCollection;
-import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.startup.TesterServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.startup.TomcatBaseTest;
 import org.apache.catalina.util.Base64;
 import org.apache.tomcat.util.buf.ByteChunk;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.SecurityCollection;
+import org.apache.tomcat.util.xml.SecurityConstraint;
 
 /**
  * Test BasicAuthenticator and NonLoginAuthenticator when a

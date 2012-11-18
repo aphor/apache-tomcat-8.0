@@ -45,11 +45,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.Context;
 import org.apache.catalina.authenticator.SSLAuthenticator;
 import org.apache.catalina.connector.Connector;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.SecurityCollection;
-import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.startup.TestTomcat.MapRealm;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.xml.LoginConfig;
+import org.apache.tomcat.util.xml.SecurityCollection;
+import org.apache.tomcat.util.xml.SecurityConstraint;
 
 public final class TesterSupport {
 
