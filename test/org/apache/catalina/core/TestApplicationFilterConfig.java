@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.deploy.FilterDef;
+import org.apache.tomcat.util.xml.FilterDef;
 import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.startup.TomcatBaseTest;
