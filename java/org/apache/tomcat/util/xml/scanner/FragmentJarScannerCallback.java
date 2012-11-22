@@ -17,21 +17,40 @@ import org.apache.tomcat.util.xml.WebXml;
 import org.apache.tomcat.util.xml.parser.WebXmlParser;
 import org.xml.sax.InputSource;
 
+/**
+ * Callback that will be used when processing for web-fragment.xml
+ */
 class FragmentJarScannerCallback implements JarScannerCallback {
 
-    private static final String FRAGMENT_LOCATION =
-        "META-INF/web-fragment.xml";
-    
-    private final Map<String,WebXml> fragments = new HashMap<>();
-    
+    private static final String FRAGMENT_LOCATION = "META-INF/web-fragment.xml";
+
+    /**
+     * Map that contains the fragment name and the object representation of the
+     * web-fragment.xml
+     */
+    private final Map<String, WebXml> fragments = new HashMap<>();
+
+    /**
+     * Parser that will be used for parsing web-fragment.xml
+     */
     private WebXmlParser webXmlParser;
-    
+
+    /**
+     * Result of the parse operation of all web-fragment.xml that are found. If
+     * one parse operation is not successful then the parse operation as a whole
+     * is marked as unsuccessful.
+     */
     private boolean parseOperationSuccessful = true;
 
+    /**
+     * Initializes the <code>FragmentJarScannerCallback</code>
+     * 
+     * @param webXmlParser Parser that will be used for parsing web-fragment.xml
+     */
     FragmentJarScannerCallback(WebXmlParser webXmlParser) {
         this.webXmlParser = webXmlParser;
     }
-    
+
     @Override
     public void scan(JarURLConnection jarConn) throws IOException {
 
@@ -50,8 +69,8 @@ class FragmentJarScannerCallback implements JarScannerCallback {
                 // distributable
                 fragment.setDistributable(true);
             } else {
-                InputSource source = new InputSource(
-                        resourceURL.toString() + "!/" + FRAGMENT_LOCATION);
+                InputSource source = new InputSource(resourceURL.toString()
+                        + "!/" + FRAGMENT_LOCATION);
                 source.setByteStream(is);
                 if (!this.webXmlParser.parseWebXml(source, fragment, true)) {
                     this.parseOperationSuccessful = false;
@@ -86,8 +105,8 @@ class FragmentJarScannerCallback implements JarScannerCallback {
             File fragmentFile = new File(file, FRAGMENT_LOCATION);
             if (fragmentFile.isFile()) {
                 stream = new FileInputStream(fragmentFile);
-                InputSource source =
-                    new InputSource(fragmentFile.toURI().toURL().toString());
+                InputSource source = new InputSource(fragmentFile.toURI()
+                        .toURL().toString());
                 source.setByteStream(stream);
                 if (!this.webXmlParser.parseWebXml(source, fragment, true)) {
                     this.parseOperationSuccessful = false;
@@ -109,7 +128,6 @@ class FragmentJarScannerCallback implements JarScannerCallback {
         }
     }
 
-
     @Override
     public void scanWebInfClasses() {
         // NO-OP. Fragments unpacked in WEB-INF classes are not handled,
@@ -117,10 +135,25 @@ class FragmentJarScannerCallback implements JarScannerCallback {
         // handle multiple web-fragment.xml files.
     }
 
-    Map<String,WebXml> getFragments() {
+    /**
+     * Returns a map that contains the fragment name and the object
+     * representation of the web-fragment.xml
+     * 
+     * @return Returns a map that contains the fragment name and the object
+     *         representation of the web-fragment.xml
+     */
+    Map<String, WebXml> getFragments() {
         return this.fragments;
     }
-    
+
+    /**
+     * Returns the result of the parse operation of all web-fragment.xml that
+     * are found. If one parse operation is not successful then the parse
+     * operation as a whole is marked as unsuccessful.
+     * 
+     * @return Returns the result of the parse operation of all web-fragment.xml
+     *         that are found.
+     */
     boolean isParseOperationSuccessful() {
         return this.parseOperationSuccessful;
     }

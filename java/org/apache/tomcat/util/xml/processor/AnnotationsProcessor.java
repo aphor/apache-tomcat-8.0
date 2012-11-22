@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.annotation.HandlesTypes;
+
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -31,6 +33,9 @@ import org.apache.tomcat.util.xml.FilterMap;
 import org.apache.tomcat.util.xml.ServletDef;
 import org.apache.tomcat.util.xml.WebXml;
 
+/** 
+ * Processes annotations in the web application
+ */
 public class AnnotationsProcessor {
 
     private static final String CLASS_EXTENSION = ".class";
@@ -43,6 +48,21 @@ public class AnnotationsProcessor {
     protected static final StringManager sm =
         StringManager.getManager(Constants.Package);
 
+    /**
+     * Processes the given <code>InputStream</code> for annotations and stores
+     * the result in the given <code>WebXml</code>. During this operation
+     * <code>IHandlesTypesProcessor</code> will be invoked in order to check for
+     * {@link HandlesTypes}.
+     * 
+     * @param is <code>InputStream</code> that will be processed for
+     *        annotations
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     * @param handlesTypesProcessor Processor that will check for {@link HandlesTypes}
+     * @param handlesTypesOnly Specifies whether the metadata is complete
+     * @throws ClassFormatException
+     * @throws IOException
+     */
     public static void processAnnotationsStream(InputStream is, WebXml fragment,
             IHandlesTypesProcessor handlesTypesProcessor, boolean handlesTypesOnly)
             throws ClassFormatException, IOException {
@@ -76,12 +96,14 @@ public class AnnotationsProcessor {
     }
 
     /**
-     * process filter annotation and merge with existing one!
-     * FIXME: refactoring method too long and has redundant subroutines with
-     *        processAnnotationWebServlet!
-     * @param className
-     * @param ae
-     * @param fragment
+     * Process filter annotation and merge with existing one! FIXME: refactoring
+     * method too long and has redundant subroutines with
+     * processAnnotationWebServlet!
+     * 
+     * @param className The class name
+     * @param ae Representation of the annotation
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
      */
     protected static void processAnnotationWebFilter(String className,
             AnnotationEntry ae, WebXml fragment) {
@@ -223,6 +245,16 @@ public class AnnotationsProcessor {
 
     }
 
+    /**
+     * Process servlet annotation and merge with existing one! FIXME:
+     * refactoring method too long and has redundant subroutines with
+     * processAnnotationWebFilter!
+     * 
+     * @param className The class name
+     * @param ae Representation of the annotation
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     */
     protected static void processAnnotationWebServlet(String className,
             AnnotationEntry ae, WebXml fragment) {
         String servletName = null;
@@ -325,6 +357,12 @@ public class AnnotationsProcessor {
 
     }
 
+    /**
+     * Process the init params.
+     * 
+     * @param ev
+     * @return Map that contains the init param name and value pairs
+     */
     protected static Map<String,String> processAnnotationWebInitParams(
             ElementValue ev) {
         Map<String, String> result = new HashMap<>();
@@ -368,6 +406,17 @@ public class AnnotationsProcessor {
         return values.toArray(result);
     }
 
+    /**
+     * Processes the given <code>Set</code> with fragments for annotations and
+     * stores the result in the corresponding <code>WebXml</code>. During this
+     * operation <code>IHandlesTypesProcessor</code> will be invoked in order to
+     * check for {@link HandlesTypes}.
+     * 
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     * @param handlesTypesProcessor Processor that will check for {@link HandlesTypes}
+     * @param handlesTypesOnly Specifies whether the metadata is complete
+     */
     public static void processAnnotations(Set<WebXml> fragments,
             IHandlesTypesProcessor handlesTypesProcessor, boolean handlesTypesOnly) {
         for(WebXml fragment : fragments) {
@@ -385,6 +434,18 @@ public class AnnotationsProcessor {
     }
 
 
+    /**
+     * Processes the given <code>URL</code> for annotations and stores the
+     * result in the corresponding <code>WebXml</code>. During this operation
+     * <code>IHandlesTypesProcessor</code> will be invoked in order to check for
+     * {@link HandlesTypes}.
+     * 
+     * @param url <code>URL</code> that will be processed for annotations
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     * @param handlesTypesProcessor Processor that will check for {@link HandlesTypes}
+     * @param handlesTypesOnly Specifies whether the metadata is complete
+     */
     protected static void processAnnotationsUrl(URL url, WebXml fragment,
             IHandlesTypesProcessor handlesTypesProcessor, boolean handlesTypesOnly) {
         if (url == null) {
@@ -407,6 +468,18 @@ public class AnnotationsProcessor {
     }
 
 
+    /**
+     * Processes the given <code>URL</code> for annotations and stores the
+     * result in the corresponding <code>WebXml</code>. During this operation
+     * <code>IHandlesTypesProcessor</code> will be invoked in order to check for
+     * {@link HandlesTypes}.
+     * 
+     * @param url <code>URL</code> that will be processed for annotations
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     * @param handlesTypesProcessor Processor that will check for {@link HandlesTypes}
+     * @param handlesTypesOnly Specifies whether the metadata is complete
+     */
     protected static void processAnnotationsJar(URL url, WebXml fragment,
             IHandlesTypesProcessor handlesTypesProcessor, boolean handlesTypesOnly) {
 
@@ -454,6 +527,18 @@ public class AnnotationsProcessor {
     }
 
 
+    /**
+     * Processes the given <code>File</code> for annotations and stores the
+     * result in the corresponding <code>WebXml</code>. During this operation
+     * <code>IHandlesTypesProcessor</code> will be invoked in order to check for
+     * {@link HandlesTypes}.
+     * 
+     * @param file <code>File</code> that will be processed for annotations
+     * @param fragment Representation of web application deployment descriptor where
+     *        the annotations data will be stored
+     * @param handlesTypesProcessor Processor that will check for {@link HandlesTypes}
+     * @param handlesTypesOnly Specifies whether the metadata is complete
+     */
     public static void processAnnotationsFile(File file, WebXml fragment,
             IHandlesTypesProcessor handlesTypesProcessor, boolean handlesTypesOnly) {
 

@@ -1,19 +1,56 @@
 package org.apache.tomcat.util.xml;
 
+/**
+ * Holds and manages the naming resources defined in the J2EE Enterprise Naming
+ * Context and their associated JNDI context.
+ */
 public interface INamingResources {
 
-	void removeEnvironment(String name);
+    /**
+     * Remove any environment entry with the specified name.
+     * 
+     * @param name Name of the environment entry to remove
+     */
+    void removeEnvironment(String name);
 
-	void addEnvironment(ContextEnvironment ce);
+    /**
+     * Add an environment entry for this web application.
+     * 
+     * @param environment New environment entry
+     */
+    void addEnvironment(ContextEnvironment ce);
 
-	void removeResourceLink(String name);
+    /**
+     * Remove any resource link with the specified name.
+     * 
+     * @param name Name of the resource link to remove
+     */
+    void removeResourceLink(String name);
 
-	void addResourceLink(ContextResourceLink crl);
+    /**
+     * Add a resource link for this web application.
+     * 
+     * @param resourceLink New resource link
+     */
+    void addResourceLink(ContextResourceLink crl);
 
-	void removeResource(String name);
+    /**
+     * Remove any resource reference with the specified name.
+     * 
+     * @param name Name of the resource reference to remove
+     */
+    void removeResource(String name);
 
-	void addResource(ContextResource cr);
+    /**
+     * Add a resource reference for this web application.
+     * 
+     * @param resource New resource reference
+     */
+    void addResource(ContextResource cr);
 
-	Object getContainer();
+    /**
+     * Get the container with which the naming resources are associated.
+     */
+    Object getContainer();
 
 }
